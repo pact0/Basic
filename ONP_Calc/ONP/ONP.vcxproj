@@ -153,11 +153,12 @@
   <ItemGroup>
     <ClCompile Include="dStack.cpp" />
     <ClCompile Include="ONP.cpp" />
+    <ClCompile Include="Source.cpp" />
     <ClCompile Include="Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dStack.h" />
-    <ClInclude Include="ONP.h" />
+    <ClInclude Include="Source.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

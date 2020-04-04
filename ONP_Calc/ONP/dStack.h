@@ -2,13 +2,22 @@
 
 #define STACK_H_d
 #include <stdio.h>
+#include <stdlib.h>
 #include <float.h>
 
+typedef struct tagdStackItem
+{
+	double dcKey;
+	tagdStackItem* dpNext;
+}dStackItem;
 
-void dpush(double c);	  //put c on stack
-double dpop();			  //return top element and delete it
-double dtop();			  //return top element of stack
-void ddel();			  //delete top element of stack
-int disEmpty();		      //check whether stack is empty
-double Eval(double arg1, double arg,char nOper);
+typedef dStackItem dStack;
+
+dStack* initDStack();
+void dpush(dStack** pStack, double c);			//put c on stack
+double dpop(dStack** pStack);					//return top element and delete it
+double dtop(dStack* pStack);					//return top element of stack
+void ddel(dStack** pStack);						//delete top element of stack
+int disEmpty(dStack* pStack);					//check whether stack is empty
+void dEmptyStack(dStack** pStack);
 #endif 

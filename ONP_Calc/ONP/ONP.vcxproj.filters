@@ -24,15 +24,18 @@
     <ClCompile Include="dStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ONP.h">
+    <ClInclude Include="dStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dStack.h">
+    <ClInclude Include="Source.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

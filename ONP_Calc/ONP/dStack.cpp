@@ -1,51 +1,61 @@
 #include "dStack.h"
 #include <memory.h>
 #include <stdio.h>
-#define MAXSTACK 32 
 
-double dStack[MAXSTACK] = {};
-int ndHead = 0;
-
-void demptyStack()
+dStack* initDStack()
 {
-	memset(dStack, 0, MAXSTACK * sizeof(double));  
-	ndHead = 0;
+	return NULL;
 }
-void dpush(double c)
+
+void dEmptyStack(dStack** pStack)
 {
-	if( ndHead >= MAXSTACK )
+	while( !disEmpty(*pStack) )
+		ddel(pStack);
+}
+
+void dpush(dStack** pStack, double c)
+{
+	dStackItem* dptr = (dStackItem*)malloc(sizeof(dStackItem));
+	if( !dptr )
 	{
-		printf("ERROR: stack overflow.\n");
+		perror("ERROR: allocation.");
 		return;
 	}
-	dStack[ndHead++] = c;
+	dptr->dcKey = c;
+	dptr->dpNext = *pStack;
+	*pStack = dptr;
 }
-double dpop()
+double dpop(dStack** pStack)
 {
-	if( !disEmpty() )
+	if( !disEmpty(*pStack) )
 	{
-		double n = dtop();
-		ddel();
+		double n = dtop(*pStack);
+		ddel(pStack);
 		return n;
 	}
-	printf("ERROR: Stack underflow. \n");
+	perror("ERROR: Stack underflow.\n");
 	return DBL_MIN;
 }
-double dtop()
+double dtop(dStack* pStack)
 {
-	if( !disEmpty() )
-		return dStack[ndHead - 1];
-	return DBL_MIN;
-}
-void ddel()
-{
-	if( !disEmpty() )
-		ndHead--;
-	else
-		printf("ERROR: Stack underflow.");
+	if( !disEmpty(pStack) )
+		return pStack->dcKey;
 
+	perror("ERROR: Stack underflow.");
+	return DBL_MIN;
 }
-int disEmpty()
+void ddel(dStack** pStack)
 {
-	return !ndHead;
+	if( !disEmpty(*pStack) )
+	{
+		dStackItem* dptr = *pStack;
+		*pStack = dptr->dpNext;
+		free(dptr);
+	}
+	else
+		perror("ERROR: Stack underflow.");
+}
+int disEmpty(dStack* pStack)
+{
+	return !pStack;
 }

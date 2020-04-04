@@ -1,45 +1,59 @@
 #include "Stack.h"
 
-#define MAXSTACK 32
-
-char Stack[MAXSTACK] = {};
-int nHead = 0;				//index of first empty element of the stack 
-
-void push(char c)
+Stack* initStack()
 {
-	if (nHead >= MAXSTACK)
+	return NULL;
+}
+
+void EmptyStack(Stack** pStack)
+{
+	while( !isEmpty(*pStack) )
+		del(pStack);
+}
+
+void push(Stack** pStack, char c)
+{
+	StackItem* ptr = (StackItem*)malloc(sizeof(StackItem));
+	if( !ptr )
 	{
-		printf("ERROR: stack overflow.\n");
+		perror("ERROR: allocation.");
 		return;
 	}
-	Stack[nHead++] = c;
+	ptr->cKey = c;
+	ptr->pNext = *pStack;
+	*pStack = ptr;
 }
-char pop()
+char top(Stack* pStack)
+{
+	if( !isEmpty(pStack) )
+		return pStack->cKey;
+	return 0;
+}
+void del(Stack** pStack)
+{
+	if( !isEmpty(*pStack) )
+	{
+		StackItem* ptr = *pStack;
+		*pStack = ptr->pNext;
+		free(ptr);
+	}
+	else
+		perror("ERROR: Underflow.");
+}
+
+char pop(Stack** pStack)
 {
 	char c;
-	if (c = top())
+	if( c = top(*pStack) )
 	{
-		del();
+		del(pStack);
 		return c;
 	}
-	printf("ERROR: Stack underflow. \n");
+	perror("ERROR: Stack underflow.");
 	return 0;
 }
-char top()
-{
-	if (!isEmpty())
-		return Stack[nHead - 1];
-	return 0;
-}
-void del()
-{
-	if (!isEmpty())
-		nHead--;
-	else
-		printf("ERROR:");
 
-}
-int isEmpty()
+int isEmpty(Stack* pStack)
 {
-	return !nHead;
+	return !pStack;
 }
