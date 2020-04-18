@@ -30,13 +30,13 @@ int main(int argc, const char* argv[])
 	if( CreateMatrix(&mat, nDim) == 0 )							//Allocate data for a matrix
 	{
 		perror("Allocation error while creating main matrix.\n");
-		return 1;
+		return 2;
 	}
 	double* b = NULL;											//Vector
 	if( CreateVector(&b, nDim) == 0 )
 	{
 		perror("Error allocating memory for data vector.\n");
-		return 2;
+		return 3;
 	}
 	
 
@@ -53,14 +53,14 @@ int main(int argc, const char* argv[])
 	if( fabs(det) <= 1e-16 )
 	{
 		perror("Macierz osobliwa.\n");
-		return 3;
+		return 4;
 	}
 
 	double** invMat = NULL;
 	if( CreateMatrix(&invMat, nDim) == 0 )
 	{
 		perror("Allocation error while creating an inverse matrix.\n");
-		return 4;
+		return 5;
 	}
 
 	InverseMatrix(invMat, mat, nDim, det);
@@ -73,7 +73,7 @@ int main(int argc, const char* argv[])
 	if( CreateVector(&res, nDim) == 0 ) 
 	{
 		perror("Error allocating memory for result vector.\n");
-		return 5;
+		return 6;
 	}
 
 	LayoutEqu(invMat, b, res, nDim);
@@ -85,7 +85,7 @@ int main(int argc, const char* argv[])
 	free(res);
 	free(b);
 	system("PAUSE");
-	return 0;
+
 }
 
 void ReadData(FILE* fin, double** pMatrix, double* b, int nDim)

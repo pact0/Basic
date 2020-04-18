@@ -46,11 +46,11 @@ double Det(double** pTab, int nSize)
 {
 	if( nSize == 1 )
 		return **pTab;
-	else if( nSize == 2 )
-	{
-		return ( (**pTab * pTab[1][1] ) - ( pTab[0][1] * pTab[1][0]) );
-	}
-	double** minor = NULL;	
+	if( nSize == 2 )
+		return  **pTab * pTab[1][1]  -  pTab[0][1] * pTab[1][0] ;
+
+	double** minor = NULL;
+
 	if( CreateMatrix(&minor, nSize - 1) == 0 ) 
 	{
 		perror("Error creating a minor matrix.(Det)\n");
@@ -122,7 +122,11 @@ void LayoutEqu(double** pInv, double* pB, double* pRes, int nSize)
 void ComplMatrix(double** pTabD, double** pTab, int nDim)
 {
 	double** ptr;
-	CreateMatrix(&ptr, nDim);
+	if( CreateMatrix(&ptr, nDim - 1) == 0 )
+	{
+		perror("Error creating a minor matrix.(ComplMatrix)\n");
+		return;
+	}
 
 	for( int i = 0; i < nDim; i++ ) 
 	{
@@ -135,7 +139,7 @@ void ComplMatrix(double** pTabD, double** pTab, int nDim)
 			sign = -sign;
 		}
 	}
-	DeleteMatrix(&ptr, nDim - 1);
+	DeleteMatrix(&ptr, nDim -1);
 }
 
 void Cut(double** pTabO, double** pTabI, int nRow, int nCol, int nDim)
