@@ -1,79 +1,70 @@
 #include "FQueue.h"
-
-// funkcja prywatna modulu  - tylko usuniecie elemenu z listy (nie info)
 void  QFDel(QFIFO* q);
-
-// kreowanie dynamiczne kolejki                                  
+                            
 QFIFO* QFCreate()
 {
 	QFIFO* list;
 	list = (QFIFO*)calloc(1, sizeof(QFIFO));
 	if( list == NULL ) return NULL;
 
-	list->pTail = NULL;
-	list->pHead = NULL;
-
+	QItem* node = (QItem*)calloc(1, sizeof(QItem));
+	if( node == NULL ) return NULL;
+	list->pHead = node;
+	list->pHead->next = NULL;
+	list->pTail = node;
 	return list;
 }
 
-// zwraca 1 gdy kolejka pusta, w przeciwnym wypadku 0
-int QFEmpty(QFIFO* q)
+int QFEmpty(QFIFO* q)//returns 1 if empty
 {
-	return !( q->pHead );
+	return !( q->pHead->next );
 }
 
-// wstawienie elementu do kolejki i zwrocenie 1 gdy OK i 0 gduy blad alokacji
 int QFEnqueue(QFIFO* q, QFItem* pItem)
 {
 	QItem* node = (QItem*)calloc(1, sizeof(QItem));
 	if( node == NULL ) return 0;
-
-	node->value = pItem;
+	
+	node->value= pItem;
+	node->next = NULL;
 	if( !QFEmpty(q) )
 		q->pTail->next = node;
 	else
-		q->pHead = node;
-	node->next = NULL;
+		q->pHead->next = node;
 	q->pTail = node;
 	return 1;
 }
 
-// usuniecie elementu z kolejki i zwrocenie wskaznika do tego elementu (NULL - kolejka pusta)
 QFItem* QFDequeue(QFIFO* q)  // ma wywolac QFDel()
 {
 	if( q == NULL ) return NULL;
+		
 	if( QFEmpty(q) ) return NULL;
+	QFItem* temp = q->pHead->next->value;
 	QFDel(q);
-	return ( q->pHead->value );
+	return ( temp );
 }
 
-// czyszczenie kolejki, kolejke mozna uzywac dalej
 void  QFClear(QFIFO* q)
 {
 	if( q == NULL ) return;
 
-	while( q->pHead != NULL )
+	while( !QFEmpty(q) )
 		QFDel(q);
 }
 
 void  QFRemove(QFIFO** q)
 {
 	QFClear(*q);
+	free(( *q )->pHead);
 	free(( *q ));
 	*q = NULL;
 }
 
-
-// funkcja prywatna modulu  - tylko usuniecie elemenu z listy (nie info)
 void  QFDel(QFIFO* q)
 {
-	if( QFEmpty(q) )
-		return;
 	QItem* temp;
-
-	temp = q->pHead;
-	if( !( q->pHead->next ) )
-		q->pTail = NULL;
-	q->pHead = q->pHead->next;
+	temp = q->pHead->next;
+	q->pHead->next = temp->next;
 	free(temp);
 }

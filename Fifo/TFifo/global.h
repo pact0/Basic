@@ -1,5 +1,6 @@
 #ifndef GLOBAL_H
 #define GLOBAL_G
+void freeInfo(const void*);
 
 typedef struct
 {
@@ -8,4 +9,4 @@ typedef struct
 } QInfo;
 
 #define QFITEM QInfo
-#endif // !GLOBAL_H
+#endif

@@ -1,39 +1,55 @@
 #include <iostream>
 #include "FQueue.h"
-
 void PrintList(QFIFO* q);
+#define DEBUG
+
 int main()
 {
+
 	QFIFO* List = QFCreate();
 	QFItem test;
 	QFItem test2;
 	QFItem test3;
 	QFItem test4;
 	test.n_Key = 1;
-	QFEnqueue(List, &test);
-	//PrintList(List);
 	test2.n_Key = 2;
-	QFEnqueue(List, &test2);	
-	//PrintList(List);
 	test3.n_Key = 3;
-	QFEnqueue(List, &test3);
-	//PrintList(List);
 	test4.n_Key = 4;
+	QFEnqueue(List, &test);
+	QFEnqueue(List, &test2);
+	QFEnqueue(List, &test3);
 	QFEnqueue(List, &test4);
-	//PrintList(List);
-	//printf ( "\n\n\n");
-	//PrintList(List);
 
+#ifdef DEBUG
+	PrintList(List);
+	printf("\n\n\n");
+#endif
 
 	QFClear(List);
-	//PrintList(List);
-	QFItem *a = QFDequeue(List);
-	//printf("%d", a);
-	QFEnqueue(List, &test4);
-	QFEnqueue(List, &test4);
-	QFEnqueue(List, &test4);
 
+#ifdef DEBUG
+	PrintList(List);
+	printf("\n\n\n");
+#endif
+
+	QFItem* a = QFDequeue(List);
+
+#ifdef DEBUG
+	printf("a = %d\n\n\n", a);
+	PrintList(List);
+	printf("\n\n\n");
+#endif
+
+	free(a);
+	QFEnqueue(List, &test4);
+	QFEnqueue(List, &test4);
+	QFEnqueue(List, &test4);
 	QFRemove(&List);
+
+#ifdef DEBUG
+	PrintList(List);
+	printf("\n\n\n");
+#endif
 	return 0;
 }
 

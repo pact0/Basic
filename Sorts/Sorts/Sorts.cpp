@@ -72,6 +72,7 @@ int main(int argc, char* argv[])
 	free(pTab);
 	free(pTabCopy);
 	system("PAUSE");
+	return 0;
 }
 
 

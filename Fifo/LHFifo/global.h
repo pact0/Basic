@@ -7,8 +7,4 @@ typedef struct
 } QInfo;
 
 #define QFItem QInfo
-
 #endif 
-
-
-
