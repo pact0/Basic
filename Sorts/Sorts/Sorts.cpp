@@ -1,72 +1,57 @@
-#include <iostream>
 #include "Sorts.h"
 #include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <memory.h>
+//#define DEBUG
+int* CreateTab( int nSize );
+typedef void ( *Func )( int*, int );
+void print_arr( int* arr, int n ); 
+void Measure( int* tab, int n, int i, const char** funNames, Func* fun );
+void RandomFill( int* tab, int size );
 
-#define DEBUG
+int main(int argc, char* argv[])
+{
+	if( argc != 2 ) { printf( "Usage: %s	<tab_size>	", argv[0] ); return 1; }
 
-void print_arr(double* arr, int n);
-void Measure(double* tab, int n, int i);
+	srand( (int)time( NULL ) );
+	int nSize = atoi( argv[1] );
 
-void ( *fun[] )( double* x, int n )={
+	int* pTab = CreateTab( nSize );
+	if( pTab == NULL ) { printf( "Error allocating memory for main tab\n" ); return 2; }
+
+	int* pTabCopy = CreateTab( nSize );
+	if( pTabCopy == NULL ) { printf("Error allocating memory for a copy\n"); return 3; }
+
+	RandomFill( pTab, nSize );
+
+	Func fun[] = {
 	HeapSort,
 	InsterionSort,
 	SelectionSort,
 	BubbleSort,
 	BinaryInsertionSort,
 	QuickSort,
-	MixedSort
-};
+	MixedSort };
 
-const char* funNames[] ={
-	"HeapSort",
-	"InsterionSort",
-	"SelectionSort",
-	"BubbleSort",
-	"BinaryInsertionSort",
-	"QuickSort",
-	"MixedSort"
-};
-
-int main(int argc, char* argv[])
-{
-	if( argc != 2 )
-	{
-		printf("Usage: %s, <tab_size>", argv[0]);
-		return 1;
-	}
-	srand(time(NULL));
-	int nSize = atoi(argv[1]);
-
-	double* pTab = NULL;
-	pTab = CreateTab(nSize);
-	if( pTab == NULL )
-	{
-		printf("Error allocating memory for main tab\n");
-		return 1;
-	}
-
-	for( int i = 0; i < nSize; i++ )
-	{
-		pTab[i] = rand() % nSize;
-	}
-
-	double* pTabCopy = NULL;
-	pTabCopy = CreateTab(nSize);
-	if( pTabCopy == NULL )
-	{
-		printf("Error allocating memory for a copy\n");
-		return 1;
-	}
-	memcpy(pTabCopy, pTab, nSize * sizeof(double));
+	const char* funNames[] = {
+		"HeapSort",
+		"InsterionSort",
+		"SelectionSort",
+		"BubbleSort",
+		"BinaryInsertionSort",
+		"QuickSort",
+		"MixedSort"
+	};
 
 #ifdef DEBUG
-	print_arr(pTabCopy, nSize);
+	print_arr( pTab, nSize );
 #endif
 
-	for( int i = 0; i < 7; i++ )
+	for( int i = 0; i < sizeof( fun )/sizeof( Func ); ++i )
 	{
-		Measure(pTabCopy, nSize, i);
-		memcpy(pTabCopy, pTab, nSize * sizeof(double));
+		memcpy( pTabCopy, pTab, nSize * sizeof(int) );
+		Measure( pTabCopy, nSize, i, funNames, fun );
 	}
 	
 	free(pTab);
@@ -76,26 +61,40 @@ int main(int argc, char* argv[])
 }
 
 
-void print_arr(double* arr, int n)
+void print_arr( int* arr, int n )
 {
-	for( int i = 0; i < n; i++ )
+	for( int i = 0; i < n; ++i )
 	{
-		printf("%lf  ", arr[i]);
+		printf( "%d  ", *arr++ );
 	}
-	printf("\n\n");
+	printf( "\n\n" );
 }
 
-void Measure(double* tab, int n, int i)
+void Measure( int* tab, int n, int i, const char** funNames, Func* fun )
 {
-	printf("%s:\n", funNames[i]);
+	printf( "%s:\n", funNames[i] );
 
 	clock_t start = clock();
-	fun[i](tab, n);
-	double Time = ((double)(clock()) - start) / CLOCKS_PER_SEC;
+	fun[i]( tab, n );
+	double Time = ( (double)(clock()) - start ) / CLOCKS_PER_SEC;
 
 #ifdef DEBUG
 	print_arr(tab, n);
 #endif
 
-	printf("Time elapsed: %lf in seconds \n\n", Time);
+	printf( "Time elapsed: %lf in seconds \n\n", Time );
+}
+
+int* CreateTab( int nSize )
+{
+	int* tmp = (int*)malloc( sizeof(int) * nSize );
+	if( tmp )
+		memset( tmp, 0, sizeof(int) * nSize );
+	return tmp;
+}
+
+void RandomFill( int* tab, int size )
+{
+	for( int i = 0; i < size; ++i )
+		*tab++ = rand() % size;
 }

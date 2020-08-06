@@ -1,69 +1,68 @@
 #include "FQueue.h"
-void  QFDel(QFIFO* q);
+void  QFDel( QFIFO* q );
                                 
 QFIFO* QFCreate()
 {
-	QFIFO* list;
-	list = (QFIFO*)calloc(1,sizeof(QFIFO));
-	if( list == NULL ) return NULL;
-
-	list->pTail = NULL;
-	list->pHead = NULL;
-	return list;
+	return ( QFIFO* )calloc( 1, sizeof( QFIFO ) );
 }
 
-int QFEmpty(QFIFO* q)
+int QFEmpty( QFIFO* q )
 {
-	return !(q->pHead);
+	return !( q && q->pHead );
 }
 
-int QFEnqueue(QFIFO* q, QFItem* pItem)
+int QFEnqueue( QFIFO* q, QInfo* pItem )
 {
-	QItem* node = (QItem*)calloc(1,sizeof(QItem));
-	if( node == NULL ) return 0;
+	if( !q ) return NULL;
+	QFItem* node = ( QFItem* )calloc( 1,sizeof( QFItem ) );
+	if( !node ) return 0;
 
 	node->value = pItem;
 	if( !QFEmpty(q) )
 		q->pTail->next = node;
 	else
 		q->pHead = node;
-	node->next = NULL;
 	q->pTail = node;
 	return 1;
 }
 
-QFItem* QFDequeue(QFIFO* q)
+QInfo* QFDequeue( QFIFO* q )
 {
-	if( q == NULL ) return NULL;
-	if( QFEmpty(q) ) return NULL;
-	QFItem* temp = q->pHead->value;
+	if( !q || QFEmpty(q) ) return NULL;
+	QInfo* temp = q->pHead->value;
 	QFDel(q);
-	return ( temp );
+	return  temp;
 }
 
-void  QFClear(QFIFO* q)
+void  QFClear( QFIFO* q )
 {
-	if( q == NULL ) return;
+	if( !q ) {
+		printf( "Error: nullptr.(QFClear)" );
+		return;
+	}
+	while( !QFEmpty(q) ) free( QFDequeue(q) );
 
-	while( q->pHead != NULL )
-		QFDel(q);
 }
 
-void  QFRemove(QFIFO** q)
+void  QFRemove( QFIFO** q )
 {
-	QFClear(*q);
-	free(( *q ));
+	if( !q || !(*q) ) {
+		printf( "Error: nullptr.(QFRemove)" );
+		return;
+	}
+	QFClear( *q );
+	free( *q );
 	*q = NULL;
 }
 
-void  QFDel(QFIFO* q)
+void  QFDel( QFIFO* q )
 {
-	if( QFEmpty(q) )
+	if( !q || QFEmpty(q) ) {
+		printf( "Error: nullptr or empty queue.(QFDel)" );
 		return;
-	QItem* temp;
-	temp = q->pHead;
-	if( !( q->pHead->next ) ) q->pTail = NULL;
-	
-	q->pHead = q->pHead->next;	
-	free(temp);
+	}
+	QFItem* temp = q->pHead;
+	q->pHead = temp->next;
+	if( QFEmpty(q) ) q->pTail = NULL;
+	free( temp );
 }

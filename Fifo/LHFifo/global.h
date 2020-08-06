@@ -6,5 +6,4 @@ typedef struct
 	int n_Key;
 } QInfo;
 
-#define QFItem QInfo
 #endif 

@@ -1,6 +1,6 @@
 #ifndef GLOBAL_H
 #define GLOBAL_G
-void freeInfo(const void*);
+void freeInfo( const void* );
 
 typedef struct
 {

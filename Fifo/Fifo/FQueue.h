@@ -3,22 +3,23 @@
 
 #include "global.h"
 #include <stdlib.h>
+#include <stdio.h>
 
-typedef struct QItem {
-	QFItem* value;
-	QItem* next;
-}QItem;
+typedef struct tagQFItem {
+	QInfo* value;
+	tagQFItem* next;
+}QFItem;
 
 typedef struct QFIFO {
-	QItem* pHead;
-	QItem* pTail;
+	QFItem* pHead;
+	QFItem* pTail;
 } QFIFO;
 
                   
 QFIFO* QFCreate();							//creats queue
 int QFEmpty(QFIFO* q);						//checkswhether the queue is empty
-int QFEnqueue(QFIFO* q, QFItem* pItem);		//adds an item to queue
-QFItem* QFDequeue(QFIFO* q);				//removes an item from queue
+int QFEnqueue(QFIFO* q, QInfo* pItem);		//adds an item to queue
+QInfo* QFDequeue(QFIFO* q);				//removes an item from queue
 void  QFClear(QFIFO* q);					//clears all elements - the queue is still usable
 void  QFRemove(QFIFO** q);					//removes all emenets and frees from memory
 #endif										

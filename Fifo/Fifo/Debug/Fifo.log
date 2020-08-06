@@ -1,3 +1,0 @@
-﻿  Fifo.cpp
-C:\Users\Kuba\Documents\GitHub\Wheelchair-Projects\Fifo\Fifo\Fifo.cpp(38,9): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'QInfo *'
-  Fifo.vcxproj -> C:\Users\Kuba\Documents\GitHub\Wheelchair-Projects\Fifo\Debug\Fifo.exe

@@ -4,7 +4,6 @@ void PrintList(QFIFO* q);
 
 int main()
 {
-
 	QFIFO* List = QFCreate(5);
 
 #ifdef DEBUG
@@ -16,24 +15,24 @@ int main()
 	QFITEM p2;
 	QFITEM p3;
 	
-	p.pTab = (int*)malloc(2 * sizeof(int));
+	p.pTab = (int*)malloc( 2 * sizeof(int) );
 	p.pTab[0] = 1;
-	p.pTab[1] = 1*2;
+	p.pTab[1] = 2;
 	p.n_Key = 1;
 
-	p2.pTab = (int*)malloc( 2 * sizeof(int));
+	p2.pTab = (int*)malloc( 2 * sizeof(int) );
 	p2.pTab[0] = 2;
-	p2.pTab[1] = 2 * 2;
+	p2.pTab[1] = 4;
 	p2.n_Key = 2;
 
-	p3.pTab = (int*)malloc( 2 * sizeof(int));
+	p3.pTab = (int*)malloc( 2 * sizeof(int) );
 	p3.pTab[0] = 3;
-	p3.pTab[1] = 3 * 2;
+	p3.pTab[1] = 6;
 	p3.n_Key = 3;
 
-	QFEnqueue(List, &p);
-	QFEnqueue(List, &p2);
-	QFEnqueue(List, &p3);
+	QFEnqueue( List, &p) ;
+	QFEnqueue( List, &p2 );
+	QFEnqueue( List, &p3 );
 
 #ifdef DEBUG
 	printf("Complete list:\n");
@@ -41,13 +40,18 @@ int main()
 	printf("\n\n");
 #endif
 
-	QFDequeue(List);
+	QFITEM* a = QFDequeue( List );
+	free( a->pTab );
+
 #ifdef DEBUG
 	printf("Dequeued list(1):\n");
 	PrintList(List);
 	printf("\n\n");
 #endif
-	QFDequeue(List);
+
+	QFITEM* b = QFDequeue(List);
+	free(b->pTab);
+
 
 #ifdef DEBUG
 	printf("Dequeued list(2):\n");
@@ -55,7 +59,25 @@ int main()
 	printf("\n\n");
 #endif
 
-	QFClear(List, freeInfo);
+	QFClear( List, freeInfo );
+
+	p.pTab = (int*)malloc(2 * sizeof(int));
+	p.pTab[0] = 1;
+	p.pTab[1] = 2;
+	p.n_Key = 1;
+
+	p2.pTab = (int*)malloc(2 * sizeof(int));
+	p2.pTab[0] = 2;
+	p2.pTab[1] = 4;
+	p2.n_Key = 2;
+
+	p3.pTab = (int*)malloc(2 * sizeof(int));
+	p3.pTab[0] = 3;
+	p3.pTab[1] = 6;
+	p3.n_Key = 3;
+	QFEnqueue(List, &p);
+	QFEnqueue(List, &p2);
+	QFEnqueue(List, &p3);
 
 #ifdef DEBUG
 	printf("Cleared list:\n");
@@ -63,7 +85,7 @@ int main()
 	printf("\n\n");
 #endif
 
-	QFRemove(&List, freeInfo);
+	QFRemove( &List, freeInfo );
 
 #ifdef DEBUG
 	printf("Cleared list:\n");
@@ -71,27 +93,24 @@ int main()
 	printf("\n\n");
 #endif
 	return 0;
+	//Fifo3
 }
 
-void freeInfo(const void* p)
+void freeInfo( const void* p )
 {
-	if( p == NULL ) return;
-	QFIFO* q = (QFIFO*)p;
-	if( q == NULL ) return;
-	for( int i = 0; i < q->nMaxElem; i++ )
-	{
-		if(q->pFQItems[i] == NULL) return;
-		free(q->pFQItems[i]->pTab);
-	}
+	if( !p ) return;
+	QFITEM* temp = (QFITEM*)p;
+	free(temp->pTab);
+	free(temp);
 }
 
 void PrintList(QFIFO* q)
 {
-	if( q == NULL ) return;
+	if( !q ) return;
 	if( q->pFQItems == NULL ) return;
-	for( int i = 0; i <= q->nNoElem; i++ )
+	for( int i = q->nHead; i <= q->nTail; i++ )
 	{
-		if(   q->pFQItems[q->nHead + i] == NULL ) return;
-		printf("n_key = %d  tab[0] = %d  tab[1] = %d\n", q->pFQItems[q->nHead+i]->n_Key, q->pFQItems[q->nHead + i]->pTab[0], q->pFQItems[q->nHead + i]->pTab[1]);
+		if( q->pFQItems[i] == NULL ) return;
+		printf("n_key = %d  tab[0] = %d  tab[1] = %d\n", q->pFQItems[i]->n_Key, q->pFQItems[i]->pTab[0], q->pFQItems[i]->pTab[1]);
 	}
 }

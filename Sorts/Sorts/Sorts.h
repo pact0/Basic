@@ -2,13 +2,11 @@
 
 #define SORTS_H
 
-#include <iostream>
-void HeapSort(double* tab, int n);
-void InsterionSort(double* tab, int n);
-void SelectionSort(double* tab, int n);
-void BubbleSort(double* tab, int n);
-void BinaryInsertionSort(double* tab, int n);
-void QuickSort(double* tab, int n);
-void MixedSort(double* tab, int n);
-double* CreateTab(int nSize);
+void HeapSort( int* tab, int n );
+void InsterionSort( int* tab, int n );
+void SelectionSort( int* tab, int n );
+void BubbleSort( int* tab, int n );
+void BinaryInsertionSort( int* tab, int n );
+void QuickSort( int* tab, int n );
+void MixedSort( int* tab, int n );
 #endif

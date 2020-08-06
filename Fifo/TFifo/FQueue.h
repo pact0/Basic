@@ -1,5 +1,6 @@
 #ifndef FQUEUE_H
 #define FQUEUE_H
+
 #include "global.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -13,10 +14,10 @@ typedef struct {
 	QFITEM** pFQItems;						//array of pointers to info
 }QFIFO;
                             
-QFIFO* QFCreate(int nSize);							//creates dynamic array of nSize
-int QFEmpty(QFIFO* q);								//returns 1 when empty
-int QFEnqueue(QFIFO* q, QFITEM* pItem);				//insert an item to queue
-QFITEM* QFDequeue(QFIFO* q);						//remove an item from queue
-void QFClear(QFIFO* q, void fun(const void*));		//clears the queue
-void QFRemove(QFIFO** q, void fun(const void*));	//deletes the queue
+QFIFO* QFCreate( int nSize );									//creates dynamic array of nSize
+int QFEmpty( QFIFO* q );										//returns 1 when empty
+int QFEnqueue( QFIFO* q, QFITEM* pItem );						//insert an item to queue
+QFITEM* QFDequeue( QFIFO* q );									//remove an item from queue
+void QFClear( QFIFO* q, void( _cdecl* fun )( const void* ) );	//clears the queue
+void QFRemove( QFIFO** q, void( _cdecl* fun )( const void* ) );	//deletes the queue
 #endif
