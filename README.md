@@ -1,3 +1,1 @@
-# Wheelchair-Projects
-
-Projects done for school.
+# Basic-Projects
